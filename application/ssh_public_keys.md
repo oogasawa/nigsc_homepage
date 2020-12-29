@@ -13,9 +13,7 @@ ssh公開鍵の登録手順の概略は以下のとおりです。
   - Windows TeraTermの場合
   - Windows Puttyの場合
 2. 遺伝研スパコンへの公開鍵の設置
-  - 直接入力フォーム
-  - ファイルのアップロードフォーム
-3. 遺伝研スパコンへのssh接続確認（ログイン）
+
 
 
 スーパーコンピュータシステム上の~/.ssh/authorized_keysへ追加登録をしております。
@@ -23,15 +21,18 @@ ssh公開鍵の登録手順の概略は以下のとおりです。
 ログインが出来なくなったなど、問題が発生した場合には、から問い合わせ下さい。
 
 
-## ssh公開鍵及び秘密鍵の生成 : Mac/Linux/Windows WSL2環境の場合
+## Mac/Linux/Windows WSL2環境の場合
 
 
-（１）ユーザ端末におけるペア鍵の生成
+### (1) ユーザーの計算機上における公開鍵と秘密鍵の生成
 
-　利用するクライアントにＯｐｅnSSHがインストールされていることを確認して下さい。インストールされていない場合、先にインストールをお願いします。
 
-　Mac／Linuxで鍵を生成するには、ssh-keygenコマンドを使用します。
+ユーザーの計算機上にOpenSSHがインストールされていることを確認して下さい。インストールされていない場合、先にインストールをお願いします。
 
+
+秘密鍵及び公開鍵を生成するには、ssh-keygenコマンドを使用します。
+
+```bash
 $ ssh-keygen -t rsa -b 2048                                                      (1)
 Generating public/private rsa key pair.
 Enter file in which to save the key (/home/temp/.ssh/id_rsa):                    (2)
@@ -41,67 +42,87 @@ Your identification has been saved in /home/temp/.ssh/id_rsa.
 Your public key has been saved in /home/temp/.ssh/id_rsa.pub.
 The key fingerprint is:
 e5:23:f0:fc:b7:60:70:80:79:91:f2:f1:6d:a8:ae:90 temp@host
+```
+   
+- (1) RSAバージョン2による2048ビットの鍵生成。
+- (2) 公開鍵及び秘密鍵の保存先指定。
+  - 変更する場合のみここでパスを指定します。変更しない場合はEnterのみ入力してください。（通常は変更不要）
+- (3) パスフレーズの入力。
+  - ユーザーの計算機が盗難等にあった場合の対策として、パスフレーズは必ず指定してください。
+- (4) パスフレーズの再入力。
 
-   (1)RSAバージョン２で、２０４８ビットの鍵を生成する。
 
-   (2)鍵ペアの保存先：変更する場合のみここでパスを指定する。変更しない場合は、Ｅｎｔerのみ入力する。
+公開鍵及び秘密鍵の保存先を確認すると、id_rsa.pub, id_rsaの２つのファイルが作成されています。
+前者が公開鍵、後者が秘密鍵のファイルです。秘密鍵は盗まれないよう厳重に管理してください。
 
-   (3)パスフレーズの入力する。
 
-   (4)パスフレーズの再入力する。
-
- 
-
-（２）遺伝研ゲートウェイノードへの公開鍵の設置
-
+```
 $ ls ~/.ssh
 id_rsa  id_rsa.pub
 $ cat ~/.ssh/id_rsa.pub
-ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAznOdmkDHzjDpsNIhkl2VNjUXBlC3QePKDAzmu3FDCMgBYUDyiXAXLf85q25cylVq66gLUP63nlFJz4/SLO13w2Qf3Gyyj7ADJJZR3sD+Sf8vdlt2hShAT0kkKBmToBqv2Pqx2SfzRVedlyCE4YFieUVmZUkz95dxwSUklGXmQSvigkqCG86r0NlxCSMjYitDGWAyGMu37cvBYzH0+C2uthtbqTd1VYHfjtvewySSZsvbVVnjLme0Ah2cAyifVaSN4uslDBqkN62b3vaijoXPy9ieUzSP0/dgBhKN/m7yhnM/1s+foJnRI3wfDdqXPw3yOqPC/9EXrjnmdpEmpgMJTw== temp@host
+ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAznOdmkDHzjDpsNIhkl2VNjUXBlC3QePKDAzmu3FDCMgBYUDyiXAXLf85q25cy
+lVq66gLUP63nlFJz4/SLO13w2Qf3Gyyj7ADJJZR3sD+Sf8vdlt2hShAT0kkKBmToBqv2Pqx2SfzRVedlyCE4YFieUVmZUkz95
+dxwSUklGXmQSvigkqCG86r0NlxCSMjYitDGWAyGMu37cvBYzH0+C2uthtbqTd1VYHfjtvewySSZsvbVVnjLme0Ah2cAyifVaS
+N4uslDBqkN62b3vaijoXPy9ieUzSP0/dgBhKN/m7yhnM/1s+foJnRI3wfDdqXPw3yOqPC/9EXrjnmdpEmpgMJTw== temp@host
 $ 
+```
 
- 鍵ペアの保存先を確認すると、id_rsa,id_rsa.pubの２つのファイルが作成されています。
 
- id_rsa.pubが公開鍵になりますので、ファイルの内容をコピー、直接入力フォームにペーストすることで、公開鍵の登録が出来ます。
 
-もしくは、ファイルのアップロードフォームでid_rsa.pubをアップロードして下さい。
+### (2) 遺伝研スパコンへの公開鍵の設置
 
-　・ 直接入力フォーム
+公開鍵ファイルid_rsa.pubを遺伝研スパコンに登録するには以下の2つの方法があります。
 
-sshdirectjpg
- 
+<table>
+<tr valign="top">
+<td>
 
-画面下部（赤枠）部分に上記でコピーした鍵をペーストする。ベースト後、画面下部の公開鍵ボタンを押して登録を行う。
-
- 
-
-　・ ファイルのアップロードフォーム
-
-sshupload
+[公開鍵ファイルのアップロードフォーム]()
 
 画面下部（赤枠）の【選択】を押し、ファイル選択画面寄り、アップロードするファイルを選択後、画面下部（赤枠）の【公開鍵登録】ボタンを押して登録を行う。
 
- 
+</td>
+<td>
 
-（３）遺伝研ゲートウェイノードへのＳＳＨ接続確認
+[公開鍵の直接入力フォーム](https://sc2.ddbj.nig.ac.jp/index.php/ja-form-ssh-application)
 
- sshコマントにてスーパーコンピュータシステムに接続します。
+画面下部（赤枠）部分に上記でコピーした鍵をペーストする。ベースト後、画面下部の公開鍵ボタンを押して登録を行う。
 
-$ ssh （アカウント名）@gw.ddbj.nig.ac.jp
-Enter passphrase for key '/home/（アカウント名）/.ssh/id_rsa':
-Last login: Fri Sep 19 13:28:19 2014 from gw.ddbj.nig.ac.jp
+</td>
+</tr>
+<tr valign="top">
+<td>
+
+![](sshupload.jpeg)
+
+</td>
+<td>
+
+![](sshdirectjpg.jpeg)
+
+</td>
+</tr>
+</table>
+
+
+遺伝研スパコンにログインできるようになったか確認する。
+
+```bash
+$ ssh アカウント名@gw.ddbj.nig.ac.jp
+Enter passphrase for key '/home/アカウント名/.ssh/id_rsa':
+Last login: Fri Sep 19 13:28:19 2019 from gw.ddbj.nig.ac.jp
 ---------------------------------------------------------------------
 Thank you for using supercomputer system.
 This node is in use for login service only. Please use 'qlogin'.
 ---------------------------------------------------------------------
 [（アカウント名）@gw ~]$
+```
 
-　パスフレーズの入力依頼が表示されたら鍵生成に指定したパスフレーズを入力します。
+パスフレーズの入力プロンプトが表示されたら鍵生成に指定したパスフレーズを入力します。
 
-　認証後、スーパーコンピュータシステムへのログインが完了します。
+パスフレーズ及び公開鍵・秘密鍵の認証後、スーパーコンピュータシステムへのログインが完了します。
 
-  秘密鍵の格納場所が^/.ssh/id_rsa以外の場合はｓｓｈコマンドのパラメタ、-i 秘密鍵ＰＡTHを用いることも可能です。
-
+秘密鍵の格納場所が`~/.ssh/id_rsa`以外の場合はsshコマンドのパラメタ、-i 秘密鍵PATHを用いることも可能です。
 
 
 
