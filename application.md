@@ -19,7 +19,7 @@
   - ログインユーザーアカウント発行基準、システム利用規程
 2. [新規ユーザー登録申請フォーム](https://sc2.ddbj.nig.ac.jp/index.php/ja-new-application)
   - ユーザー登録は随時受け付けています。新規ユーザー登録を行うと高速ストレージ1TBが利用可能となります。
-3. [ssh公開鍵の登録・追加・変更方法の説明](application/ssh_public_keys.md)、[ssh公開鍵の登録フォーム](https://sc2.ddbj.nig.ac.jp/index.php/ja-form-ssh-application)
+3. [ssh公開鍵の登録・追加・削除方法の説明](application/ssh_public_keys.md)
   - スパコンにログインするためにssh公開鍵を登録していただきます。
 
 
